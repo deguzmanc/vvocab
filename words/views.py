@@ -97,3 +97,14 @@ def gettranscript(request):
   print(transcript_form)
   context = {'form' : transcript_form}
   return render(request, "transcript.html", context)
+
+# def video(request):
+#    return render(request, "video-page.html")
+
+
+def video(request, id=None):
+  if id is None:
+    return render(request, "video-page.html")
+  context = {}
+  context["id"] = id
+  return render(request, "video-page.html", context)

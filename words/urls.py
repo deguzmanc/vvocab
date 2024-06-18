@@ -9,4 +9,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path("submitlink/", views.submitlink, name="submitlink"),
     path("gettranscript/", views.gettranscript, name="gettranscript"),
+    path('video/', views.video, name='video-page'),
+    path('video/<int:id>/', views.video, name='video'),
+    
 ]
