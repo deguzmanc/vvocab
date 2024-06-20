@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load partials %}
+{% load static %}
 
 {% block title %}
     vvocab
@@ -6,9 +8,25 @@
 
 {% block main %}
 
+
+
 <div>
-  <h1>Video page</h1>
-  <div>This is video {{id}}</div>
+  {% if id %}
+  <p>Video id: {{id}}</p>
+  {% else %}
+  <h1>Videos page</h1>
+
+  {% endif %}
+
+  <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+  {% partialdef video-player inline=True %}
+
+  {{ id|json_script:"id-data" }}
+  <div id="player"></div>
+  <script src="{% static 'js/youtube-player.js' %}"></script>
+  <button class="btn btn-primary" onclick="seekVideo(10, false)">seek test</button>
+  {% endpartialdef %}
+
 </div>
 
 {% endblock main %}

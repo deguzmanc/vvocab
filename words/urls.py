@@ -10,6 +10,6 @@ urlpatterns = [
     path("submitlink/", views.submitlink, name="submitlink"),
     path("gettranscript/", views.gettranscript, name="gettranscript"),
     path('video/', views.video, name='video-page'),
-    path('video/<int:id>/', views.video, name='video'),
+    path('video/<str:id>/', views.video, name='video'),
     
 ]
