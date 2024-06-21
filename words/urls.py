@@ -11,5 +11,5 @@ urlpatterns = [
     path("gettranscript/", views.gettranscript, name="gettranscript"),
     path('video/', views.video, name='video-page'),
     path('video/<str:id>/', views.video, name='video'),
-    
+
 ]

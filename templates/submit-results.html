@@ -1,19 +1,5 @@
 {% load partials %}
 
-{% partialdef select %}
-<select class="select w-full max-w-xs">
-  <option disabled selected>
-    {{placeholder | default:"Select a language"}}
-  </option>
-  {% for language in languages %}
-    <option value="{{ language.language_code }}" {% if language.language != "Japanese" and "English" not in language.language%} disabled {% endif %}>
-      {{ language.language }}
-    </option>
-  {% endfor %}
-  <div>{{languages}}</div>
-</select>
-{% endpartialdef %}
-
 <div id="submit-results" class="flex flex-col gap-4">
   <a href="/video/{{ video.getVideoId|stringformat:'s' }}">
     <h1>{{video.title}}</h1>
@@ -46,5 +32,4 @@
   {% with placeholder="Destination Language" %}
     {% partial select %}
   {% endwith %}
-  <div class="btn btn-primary" hx-get="gettranscript" hx-swap="outerHTML">Get Transcript</div>
 </div>
