@@ -9,10 +9,10 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 # import form class from django
 # from django import forms
- 
+
 # import Video from models.py
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout 
+from django.contrib.auth import authenticate, login, logout
 from .forms import SignupForm, LoginForm, TranscriptForm, VideoForm
 
 
@@ -21,36 +21,41 @@ def index(request):
   context["form"] = VideoForm()
   return render(request, "index.html", context)
 
-# signup page
+
 def user_signup(request):
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = SignupForm()
-    return render(request, 'signup.html', {'form': form})
+  if request.method == 'POST':
+    form = SignupForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return redirect('login')
+  else:
+    form = SignupForm()
+  return render(request, 'signup.html', {'form': form})
 
 # login page
+
+
 def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user:
-                login(request, user)    
-                return redirect('home')
-    else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+  if request.method == 'POST':
+    form = LoginForm(request.POST)
+    if form.is_valid():
+      username = form.cleaned_data['username']
+      password = form.cleaned_data['password']
+      user = authenticate(request, username=username, password=password)
+      if user:
+        login(request, user)
+        return redirect('home')
+  else:
+    form = LoginForm()
+  return render(request, 'login.html', {'form': form})
 
 # logout page
+
+
 def user_logout(request):
-    logout(request)
-    return redirect('login')
+  logout(request)
+  return redirect('login')
+
 
 @require_POST
 def submitlink(request):
@@ -66,7 +71,8 @@ def submitlink(request):
     video.setTitlefromUrl()
     context['video'] = video
 
-    transcript_list = YouTubeTranscriptApi.list_transcripts(video.getVideoId())
+    transcript_list = YouTubeTranscriptApi.list_transcripts(
+        video.getVideoId())
     # for transcript in transcript_list:
     #   # the Transcript object provides metadata properties
     #   print(
@@ -77,7 +83,6 @@ def submitlink(request):
     #   )
     context['languages'] = transcript_list
 
-    
     return render(request, "submit-results.html", context)
 
   # ValidationError
@@ -87,15 +92,16 @@ def submitlink(request):
   #   for message in form.errors.as_data()[type]:
   #     print(type(message.error_list()))
   # print(form.errors.as_data()['url'])
-  context['error'] = form.errors #.as_data() #if form.has_error('url') else {'url' : ['Please enter a valid youtube link.']}
+  # .as_data() #if form.has_error('url') else {'url' : ['Please enter a valid youtube link.']}
+  context['error'] = form.errors
   return render(request, "error.html", context)
 
-   
+
 def gettranscript(request):
 
   transcript_form = TranscriptForm(request.POST)
   print(transcript_form)
-  context = {'form' : transcript_form}
+  context = {'form': transcript_form}
   return render(request, "transcript.html", context)
 
 # def video(request):
