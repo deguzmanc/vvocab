@@ -107,4 +107,9 @@ def video(request, id=None):
     return render(request, "video-page.html")
   context = {}
   context["id"] = id
+  words_jp = YouTubeTranscriptApi.get_transcript(id, languages=['ja'])
+  print(words_jp)
+
+
+  context["words"] = words_jp
   return render(request, "video-page.html", context)

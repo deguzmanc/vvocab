@@ -15,9 +15,19 @@
 {% endpartialdef %}
 
 <div id="submit-results" class="flex flex-col gap-4">
-  <h1>{{video.title}}</h1>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video.getVideoId|stringformat:'s' }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <a href="/video/{{ video.getVideoId|stringformat:'s' }}">
+    <h1>{{video.title}}</h1>
 
+  </a>
+
+  {% include "video-page.html#video-player" with id=video.getVideoId %}
+
+  {% with placeholder="Source Language" %}
+    {% partial select %}
+  {% endwith %}
+  {% with placeholder="Destination Language" %}
+    {% partial select %}
+  {% endwith %}
   {% with placeholder="Source Language" %}
     {% partialdef select inline=True%}
     <select class="select w-full max-w-xs">
