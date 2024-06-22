@@ -33,7 +33,7 @@ def user_signup(request):
       return redirect('login')
   else:
     form = SignupForm()
-  return render(request, 'signup.html', {'form': form})
+  return render(request, 'users/signup.html', {'form': form})
 
 # login page
 
@@ -54,7 +54,7 @@ def user_login(request):
         return redirect('index')
   else:
     form = LoginForm()
-  return render(request, 'login.html', {'form': form})
+  return render(request, 'users/login.html', {'form': form})
 
 # logout page
 
@@ -125,7 +125,7 @@ def video(request, id=None):
 
 @login_required
 def profile(request):
-  return render(request, "allauth/profile.html")
+  return render(request, "users/profile.html")
 
 
 class MySignupView(SignupView):

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load widget_tweaks %}
+{% load partials %}
+{% load static %}
+
+{% block title %}
+  login
+{% endblock title %}
+
+{% block main %}
+
+  <div class="flex justify-center items-center flex-col">
+    <div class="p-12 bg-slate-100 mx-auto rounded-2xl w-100 flex justify-center item flex-col gap-4">
+      <h1 class="mb-5 text-3xl text-center">Login</h1>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="flex flex-col gap-2">
+          {% include "users/signup.html#_non_field_errors" %}
+
+          {% for field in form.visible_fields %}
+            {% if field.name != "remember" %}
+              <div class="mb-4">
+                {{ field|add_label_class:"font-semibold text-xs" }}
+                {% if field.errors %}
+                  {% render_field field class="flex items-center w-64 h-12 px-4 pb-2 mt-2 border-red-500 rounded-xl w-full focus:outline-none focus:ring-2" %}
+                {% else %}
+                  {% render_field field class="flex items-center w-64 h-12 px-4 pb-2 mt-2 rounded-xl w-full focus:outline-none focus:ring-2" %}
+                {% endif %}
+                {% for error in field.errors %}
+                  <span class="flex items-center max-w-xs mt-1 ml-1 text-xs font-medium tracking-wide text-red-500">{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+          <div class="m-4 flex justify-between gap-4">
+            <button type="submit" class="btn btn-accent flex-grow">Login</button>
+            <a class="btn flex-grow" href="{% url 'signup' %}">Create Account</a>
+          </div>
+
+        </div>
+      </form>
+      <div class="flex justify-center mt-6 text-xs">
+        <a class="text-blue-400 hover:text-blue-500"
+           href="{% url 'account_reset_password' %}">Forgot Password</a>
+        <span class="mx-2 text-gray-300">/</span>
+        <a class="text-blue-400 hover:text-blue-500"
+           href="{% url 'account_signup' %}">Sign Up</a>
+      </div>
+
+      {% include "users/signup.html#social-providers-buttons" %}
+    </div>
+
+  </div>
+{% endblock main %}
+

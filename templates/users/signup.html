@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% load socialaccount %}
+{% load partials%}
+
+{% block title %}
+  signup
+{% endblock title %}
+
+
+
+{% block main %}
+
+  <div class="flex justify-center items-center flex-col">
+    <div class="p-12 bg-slate-100 mx-auto rounded-2xl w-100 flex justify-center item flex-col gap-4">
+      <h1 class="mb-5 text-3xl text-center">Signup</h1>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="flex flex-col gap-2">
+
+
+          {% partialdef _non_field_errors inline=True %}
+            {% if form.non_field_errors %}
+              <ul class="max-w-xs">
+                {% for error in form.non_field_errors %}
+                  <li class="my-6 text-xs font-medium tracking-wide text-red-500">{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endpartialdef %}
+
+          {% for field in form.visible_fields %}
+            <div class="mb-4">
+              {{ field|add_label_class:"font-semibold text-xs" }}
+              {% if field.errors %}
+                {% render_field field class="flex items-center w-64 h-12 px-4 pb-2 mt-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 w-full" %}
+              {% else %}
+                {% render_field field class="flex items-center w-64 h-12 px-4 pb-2 mt-2 rounded-xl focus:outline-none focus:ring-2 w-full" %}
+              {% endif %}
+              {% for error in field.errors %}
+                <span class="flex items-center max-w-xs mt-1 ml-1 text-xs font-medium tracking-wide text-red-500">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endfor %}
+
+          <div class="flex items-center item gap-4">
+            <button type="submit" class="btn btn-accent">Signup</button>
+            <a href="{% url 'login' %}" class="text-primary">Already have account?</a>
+            <div>
+
+            </div>
+          </div>
+
+        </div>
+      </form>
+      {% partialdef social-providers-buttons inline=True %}
+        {% get_providers as socialaccount_providers %}
+        {% for provider in socialaccount_providers %}
+          {% if provider.id == "openid" %}
+            {% for brand in provider.get_brands %}
+              <a class="flex items-center self-stretch justify-center h-12 mt-3 text-white uppercase rounded bg-stone-900 hover:bg-black"
+                 href="{% provider_login_url provider.id  openid=brand.openid_url process=process %}">{{ brand.name }}</a>
+            {% endfor %}
+          {% endif %}
+          <a class="flex items-center justify-center h-12 mt-3 text-white uppercase self-stretch rounded"
+             href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+            {% with 'img/'|add:provider.id|add:'.png' as image_path %}
+              <img class="scale-with-grid" src="{% static image_path %}" height="50" width="300"/>
+            {% endwith %}
+            {% comment %} <img src="{% static 'img/'|add:{{provider.id}}.png' %}" height="50" width="300"/> {% endcomment %}
+          </a>
+        {% endfor %}
+      {% endpartialdef %}
+
+    </div>
+  </div>
+{% endblock main %}
