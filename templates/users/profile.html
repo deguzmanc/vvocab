@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% get_social_accounts user as accounts %}
+
+{% block title %}
+    vvocab
+{% endblock title %}
+
+{% block main %}
+
+    <div>profile: {{request.user.username}}</div>
+    <div>{{accounts}}</div>
+
+{% endblock main%}

@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -23,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-oflr3#of=v^p%lkf#nntctql2kjb#c*&n^dxf7)$4$0q#^x5+u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('ENVIRONMENT') == 'development'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -38,8 +42,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "debug_toolbar",
     'widget_tweaks',
     "template_partials",
+    'allauth',
+    'allauth.account',
+    # Optional -- requires install using `django-allauth[socialaccount]`.
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.notion',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +62,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'vvocab_project.urls'
@@ -57,7 +73,8 @@ ROOT_URLCONF = 'vvocab_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates',
+                 BASE_DIR / 'templates' / 'allauth'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,7 +82,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
+            'libraries': {
+                'socialaccounts': 'allauth.socialaccount.templatetags.socialaccount',
+            }
         },
     },
 ]
@@ -75,6 +96,41 @@ WSGI_APPLICATION = 'vvocab_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': env('GITHUB_CLIENT_ID'),
+            'secret': env('GITHUB_CLIENT_SECRET'),
+            'key': ''
+        },
+        'SCOPE': [
+            'user',
+        ],
+    },
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': env('GOOGLE_CLIENT_ID'),
+            'secret': env('GOOGLE_CLIENT_SECRET'),
+            'key': ''
+        }
+    }
+}
 
 DATABASES = {
     'default': {
@@ -127,3 +183,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost",
+]

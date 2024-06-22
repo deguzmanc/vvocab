@@ -1,0 +1,16 @@
+<div class="flex items-center px-4 py-3 text-sm text-white bg-blue-500 rounded"
+     role="alert">
+
+        <p>
+                {% if process == "connect" %}
+                        You are about to connect a new third party account from" {{ provider.name }}.
+                {% else %}
+                        You are about to sign in using a third party account from {{ provider.name }}.
+                {% endif %}
+        </p>
+</div>
+<form method="POST"
+      class="flex flex-col items-center justify-center pt-5 py-10">
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit">Submit</button>
+</form>

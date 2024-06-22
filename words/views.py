@@ -1,8 +1,11 @@
 # from django import forms
 # from django.http import HttpResponse, HttpResponseRedirect
 # from django.forms import ValidationError
+from allauth.account.views import SignupView, LoginView
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -30,12 +33,16 @@ def user_signup(request):
       return redirect('login')
   else:
     form = SignupForm()
-  return render(request, 'signup.html', {'form': form})
+  return render(request, 'users/signup.html', {'form': form})
 
 # login page
 
 
 def user_login(request):
+  # from allauth.socialaccount.templatetags.socialaccount import get_providers
+  # res = get_providers({"request": request})
+  # return HttpResponse(res)
+
   if request.method == 'POST':
     form = LoginForm(request.POST)
     if form.is_valid():
@@ -47,7 +54,7 @@ def user_login(request):
         return redirect('index')
   else:
     form = LoginForm()
-  return render(request, 'login.html', {'form': form})
+  return render(request, 'users/login.html', {'form': form})
 
 # logout page
 
@@ -114,3 +121,20 @@ def video(request, id=None):
   context = {}
   context["id"] = id
   return render(request, "video-page.html", context)
+
+
+@login_required
+def profile(request):
+  return render(request, "users/profile.html")
+
+
+def social_confirm(request):
+  return render(request, "users/social_confirm.html")
+
+
+class MySignupView(SignupView):
+  template_name = 'allauth/signup.html'
+
+
+class MyLoginView(LoginView):
+  template_name = 'allauth/login.html'

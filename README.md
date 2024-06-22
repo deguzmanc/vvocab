@@ -3,6 +3,7 @@ Todo:
 - [x] Fix template autoformat
 - [x] Setup debugger
 - [x] Setup Auth
+- [ ] Move auth to separate django app (Users)
 - [ ] Setup SSO
 - [ ] Database Access
 - [x] HTMX youtube url upload
