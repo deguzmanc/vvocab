@@ -1,13 +1,17 @@
 Todo:
-[x] Setup Auth
-[] Setup SSO
-[] Database Access
-[x] HTMX youtube url upload
-[x] Youtube iframe
-[] Bug fix: on validation error, form cannot resubmit
-[] Refactor templates and organize
-[] Parse sentences
-[] render cards
-[] sync iframe to words
-[] fix tailwind npm not cdn
-[] Deploy
+
+- [x] Fix template autoformat
+- [x] Setup debugger
+- [x] Setup Auth
+- [ ] Setup SSO
+- [ ] Database Access
+- [x] HTMX youtube url upload
+- [x] Youtube iframe
+- [ ] Bug fix: on validation error, form cannot resubmit
+- [x] django-partial-templates
+- [ ] Refactor template structure
+- [ ] Parse sentences
+- [ ] render cards
+- [x] sync iframe to words
+- [ ] fix tailwind npm not cdn
+- [ ] Deploy
