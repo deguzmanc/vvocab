@@ -17,11 +17,13 @@
   
     <div class="flex flex-col gap-6 justify-center items-center ">
     <p>Video id: {{id}}</p>
-  
       
-      {{ id|json_script:"id-data" }}
-      <div id="player"></div>
-      <script src="{% static 'js/youtube-player.js' %}"></script>
+    {{ id|json_script:"id-data" }}
+    <div id="player"></div>
+    <script src="{% static 'js/youtube-player.js' %}"></script>
+
+    {% endpartialdef %}
+
     
       <div class="overflow-x-auto table-wrp block max-h-80">
         <table class="table table-zebra w-full">
@@ -49,7 +51,6 @@
       </div>
     </div>
   
-    {% endpartialdef %}
 
   {% else %}
   <h1>Videos page</h1>

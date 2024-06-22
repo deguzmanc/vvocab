@@ -8,13 +8,7 @@
 
   {% include "video-page.html#video-player" with id=video.getVideoId %}
 
-  {% with placeholder="Source Language" %}
-    {% partial select %}
-  {% endwith %}
-  {% with placeholder="Destination Language" %}
-    {% partial select %}
-  {% endwith %}
-  {% with placeholder="Source Language" %}
+  {% with placeholder="Available Languages" %}
     {% partialdef select inline=True%}
     <select class="select w-full max-w-xs">
       <option disabled selected>
@@ -28,8 +22,5 @@
       <div>{{languages}}</div>
     </select>
     {% endpartialdef %}
-  {% endwith %}
-  {% with placeholder="Destination Language" %}
-    {% partial select %}
   {% endwith %}
 </div>
