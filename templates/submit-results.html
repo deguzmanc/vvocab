@@ -1,24 +1,24 @@
 {% load partials %}
 
 <div id="submit-results" class="flex flex-col gap-4">
-    <a href="/video/{{ video.getVideoId|stringformat:'s' }}">
-      <h1>{{video.title}}</h1>
-    </a>
+  <a href="/video/{{ video.getVideoId|stringformat:'s' }}">
+    <h1>{{video.title}}</h1>
+  </a>
   <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video.getVideoId|stringformat:'s' }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
   {% with placeholder="Source Language" %}
     {% partialdef select inline=True%}
-    <select class="select w-full max-w-xs">
-      <option disabled selected>
-        {{placeholder | default:"Select a language"}}
-      </option>
-      {% for language in languages %}
-        <option value="{{ language.language_code }}" {% if language.language != "Japanese" and "English" not in language.language%} disabled {% endif %}>
-          {{ language.language }}
+      <select class="select w-full max-w-xs">
+        <option disabled selected>
+          {{placeholder | default:"Select a language"}}
         </option>
-      {% endfor %}
-      <div>{{languages}}</div>
-    </select>
+        {% for language in languages %}
+          <option value="{{ language.language_code }}" {% if language.language != "Japanese" and "English" not in language.language%} disabled {% endif %}>
+            {{ language.language }}
+          </option>
+        {% endfor %}
+        <div>{{languages}}</div>
+      </select>
     {% endpartialdef %}
   {% endwith %}
   {% with placeholder="Destination Language" %}
