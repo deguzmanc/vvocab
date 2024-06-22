@@ -11,5 +11,5 @@ urlpatterns = [
     path("gettranscript/", views.gettranscript, name="gettranscript"),
     path('video/', views.video, name='video-page'),
     path('video/<int:id>/', views.video, name='video'),
-
+    path('accounts/profile/', views.profile, name='profile'),
 ]

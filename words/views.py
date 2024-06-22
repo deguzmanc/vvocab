@@ -1,8 +1,10 @@
 # from django import forms
 # from django.http import HttpResponse, HttpResponseRedirect
 # from django.forms import ValidationError
+from allauth.account.views import SignupView, LoginView
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -114,3 +116,16 @@ def video(request, id=None):
   context = {}
   context["id"] = id
   return render(request, "video-page.html", context)
+
+
+@login_required
+def profile(request):
+  return render(request, "allauth/profile.html")
+
+
+class MySignupView(SignupView):
+  template_name = 'allauth/signup.html'
+
+
+class MyLoginView(LoginView):
+  template_name = 'allauth/login.html'
