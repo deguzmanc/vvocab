@@ -2,6 +2,7 @@
 # from django.http import HttpResponse, HttpResponseRedirect
 # from django.forms import ValidationError
 from allauth.account.views import SignupView, LoginView
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -38,6 +39,10 @@ def user_signup(request):
 
 
 def user_login(request):
+  # from allauth.socialaccount.templatetags.socialaccount import get_providers
+  # res = get_providers({"request": request})
+  # return HttpResponse(res)
+
   if request.method == 'POST':
     form = LoginForm(request.POST)
     if form.is_valid():

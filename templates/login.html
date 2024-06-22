@@ -1,11 +1,39 @@
 {% extends "base.html" %}
+{% load socialaccount %}
 {% load widget_tweaks %}
+{% load static %}
+
+{% get_providers as socialaccount_providers %}
 
 {% block title %}
   login
 {% endblock title %}
 
 {% block main %}
+<div>{{socialaccount_providers.0.app.name}}</div>
+{% for provider in socialaccount_providers %}
+{% if provider.id == "openid" %}
+{% for brand in provider.get_brands %}
+<div>
+  <a title="{{brand.name}}" 
+     class="socialaccount_provider {{provider.id}} {{brand.id}}" 
+     href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
+     >{{brand.name}}</a>
+</div>
+{% endfor %}
+{% endif %}
+<div class="my-2">
+  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
+     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+     <img 
+      src="
+     {% with 'img/'|add:provider.name|add:'.png' as image %}
+      {% static image %}
+     {% endwith %}
+     " alt="{{ provider.name }}" height="50" width="300"/>
+     </a>
+</div>
+{% endfor %}
 
   <div class="flex justify-center items-center flex-col">
     <div class="p-12 bg-slate-100 mx-auto rounded-2xl w-100 flex justify-center item flex-col gap-4">
@@ -23,7 +51,22 @@
 
         </div>
       </form>
+      <hr>
+      <div class="my-2">
+        <a title="GitHub" class="socialaccount_provider github" 
+           href="{% provider_login_url "github" process="login" scope=scope auth_params=auth_params %}">
+           <img src="{% static 'img/github.png' %}" height="50" width="300"/>
+        </a>
+      </div>
+      <div class="my-2">
+        <a title="Google" class="socialaccount_provider google" 
+           href="{% provider_login_url "google" process="login" scope=scope auth_params=auth_params %}">
+           <img src="{% static 'img/google.png' %}" height="50" width="300"/>
+        </a>
+      </div>
+
     </div>
+
   </div>
 {% endblock main %}
 
