@@ -128,6 +128,10 @@ def profile(request):
   return render(request, "users/profile.html")
 
 
+def social_confirm(request):
+  return render(request, "users/social_confirm.html")
+
+
 class MySignupView(SignupView):
   template_name = 'allauth/signup.html'
 

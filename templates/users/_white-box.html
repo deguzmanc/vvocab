@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    vvocab
+{% endblock title %}
+
+{% block main %}
+    <div class="flex justify-center items-center flex-col">
+        <div class="p-12 md:p-20 bg-slate-100 mx-auto rounded-2xl w-100 flex justify-center item flex-col gap-4">
+            {% block content %}
+
+            {% endblock content %}
+        </div>
+    </div>
+
+{% endblock main%}
