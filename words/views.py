@@ -17,6 +17,30 @@ from .forms import SignupForm, LoginForm, TranscriptForm, VideoForm
 
 
 def index(request):
+  if request.method == 'POST':
+    context = {}
+
+    # create a form instance and populate it with data from the request:
+    form = VideoForm(request.POST)
+
+    # check whether it's valid:
+    if form.is_valid():
+      video = form.save(commit=False)
+      video.setTitlefromUrl()
+      context['video'] = video
+
+      transcript_list = YouTubeTranscriptApi.list_transcripts(
+          video.getVideoId())
+
+      context['languages'] = transcript_list
+
+      return render(request, "index.html#submit-results", context)
+
+    # ValidationError
+    context = {}
+    context['error'] = form.errors
+    return render(request, "error.html", context)
+
   context = {}
   context["form"] = VideoForm()
   return render(request, "index.html", context)
@@ -87,7 +111,7 @@ def submitlink(request):
 def gettranscript(request):
 
   transcript_form = TranscriptForm(request.POST)
-  print(transcript_form)
+  # print(transcript_form)
   context = {'form': transcript_form}
   return render(request, "transcript.html", context)
 
@@ -101,7 +125,7 @@ def video(request, id=None):
   context = {}
   context["id"] = id
   words_jp = YouTubeTranscriptApi.get_transcript(id, languages=['ja'])
-  print(words_jp)
+  # print(words_jp)
 
   context["words"] = words_jp
   return render(request, "video-page.html", context)

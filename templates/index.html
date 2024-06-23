@@ -1,5 +1,6 @@
 
 {% extends "base.html" %}
+{% load partials%}
 
 {% block title %}
     vvocab
@@ -9,7 +10,7 @@
 <div class="flex justify-center items-center flex-col gap-4">
   <p>Input Youtube link to generate vocab words</p>
   <form class="flex gap-2" 
-    hx-post="{% url 'submitlink' %}" 
+    hx-post="{% url 'index' %}" 
     hx-target="#submit-results" 
     hx-swap="outerHTML swap:0.25s" 
     hx-indicator="#spinner" 
@@ -24,7 +25,38 @@
     </button>
 
   </form>
-  <div id="submit-results">
+  {% comment %} <div id="submit-results"> {% endcomment %}
+
+  {% partialdef submit-results inline=True%}
+    <div id="submit-results" class="flex flex-col gap-4">
+      {% if video %}
+      <a href="/video/{{ video.getVideoId|stringformat:'s' }}">
+        <h1>{{video.title}}</h1>
+    
+      </a>
+    
+      {% include "video-page.html#video-player" with id=video.getVideoId %}
+    
+      {% with placeholder="Available Languages" %}
+        {% partialdef select inline=True%}
+        <select class="select w-full max-w-xs">
+          <option disabled selected>
+            {{placeholder | default:"Select a language"}}
+          </option>
+          {% for language in languages %}
+            <option value="{{ language.language_code }}" {% if language.language != "Japanese" and "English" not in language.language%} disabled {% endif %}>
+              {{ language.language }}
+            </option>
+          {% endfor %}
+          <div>{{languages}}</div>
+        </select>
+        {% endpartialdef %}
+      {% endwith %}
+      {% endif %}
+    </div>
+  {% endpartialdef %}
+
+
   </div>
 </div>
 {% endblock main %}
