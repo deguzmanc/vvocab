@@ -43,7 +43,7 @@
               <td>{{ word.start|add:word.duration }}</td>
               <td>{{ word.text }}</td>
               <td>
-                <button class="btn btn-primary" onclick="seekVideo('{{word.start}}', false)">Seek</button>
+                <button class="btn btn-primary" onclick="seekVideo('{{word.start}}', true)">Seek</button>
             </tr>
             {% endfor %}
           </tbody>
